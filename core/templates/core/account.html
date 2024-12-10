@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% block title %}My Account{% endblock %}
+
+{% block content %}
+<div class="bg-[#fffefb] min-h-screen flex flex-col items-center px-4 py-6 overflow-y-auto">
+  <!-- Main Title -->
+  <h1 class="text-2xl font-bold text-center text-[#2c3b2f] font-comfortaa mb-6">
+    My Account
+  </h1>
+
+  <!-- Welcome Message -->
+  <p class="text-center text-sm text-[#2c3b2f] font-comfortaa mb-4">
+    Welcome, <span class="font-bold">{{ user.username }}</span>! 🎉
+  </p>
+
+  <!-- Section: User Score -->
+  <div class="w-full max-w-md bg-white border-l-4 border-[#ebc151] rounded-lg shadow-md p-4 mb-6">
+    <h2 class="text-lg font-bold text-[#2c3b2f] font-comfortaa mb-2">Your Score 🌟</h2>
+    <!-- Progress Bar -->
+    <div class="w-full bg-[#f5f5f5] h-6 rounded-lg relative overflow-hidden shadow-inner">
+      <div 
+        class="h-full bg-gradient-to-r from-[#ebc151] to-[#2e7d32] rounded-lg transition-all duration-500"
+        style="width: {{ jauge_score|floatformat:0 }}%;">
+      </div>
+    </div>
+    <!-- Score Text -->
+    <p class="text-center text-sm font-comfortaa mt-2">
+      Score: <span class="font-bold">{{ profil.score }}</span>/1000
+    </p>
+  </div>
+
+  <!-- Button: Back to Home -->
+  <div class="w-full max-w-md text-center mt-4">
+    <a 
+      href="{% if request.GET.next %}{{ request.GET.next }}{% else %}{% url 'accueil' %}{% endif %}"
+      class="block w-full text-center text-white font-bold py-2 px-6 bg-[#0077b6] rounded-lg shadow-md hover:bg-[#005f99] hover:shadow-lg transition-transform transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#0077b6] focus:ring-opacity-50">
+      Back to Home 🏠
+    </a>
+  </div>
+
+  <!-- Link: Logout -->
+  <div class="w-full max-w-md text-center mt-4">
+    <a 
+      href="/logout/?next={{ request.GET.next|default:'/' }}" 
+      class="text-sm text-gray-500 underline hover:text-gray-700">
+      Logout
+    </a>
+  </div>
+</div>
+{% endblock %}

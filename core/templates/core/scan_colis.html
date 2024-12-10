@@ -1,0 +1,66 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Package Details{% endblock %}
+
+{% block content %}
+<div class="bg-[#fffefb] h-[calc(100vh-5rem)] flex flex-col justify-start items-center px-4 pt-4 overflow-hidden">
+  <!-- Main Title -->
+  <h1 class="text-2xl font-bold text-center text-[#2c3b2f] font-comfortaa">
+    Choose the next journey of your ReBox package
+  </h1>
+
+  <!-- Subtitle -->
+  <p class="text-center text-sm text-[#2c3b2f] font-comfortaa mt-4 mb-10">
+    🎉 This package is starting its <span class="font-bold text-[#ebc151]">{{ colis.nombre_utilisations }}<sup>th</sup></span> life 🎉
+  </p>
+
+  <!-- Available Actions -->
+  <div class="space-y-4 w-full max-w-md">
+    <!-- Option 1: Return the package -->
+    <a href="{% url 'retour_colis' colis.id %}" class="flex items-center bg-[#0077b6] text-white rounded-md shadow-md p-4 hover:bg-[#005f99] transition">
+      <div class="flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#ffdd99]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
+        </svg>
+      </div>
+      <div class="ml-3 flex-1">
+        <h2 class="text-sm font-bold font-comfortaa">Return the package</h2>
+        <p class="text-xs font-comfortaa">Send it back and earn bonus points 🎁</p>
+      </div>
+      <div class="ml-auto text-[#ffdd99] font-bold text-sm">→</div>
+    </a>
+
+    <!-- Option 2: Reuse the package -->
+    <a href="#" class="flex items-center bg-[#0077b6] text-white rounded-md shadow-md p-4 hover:bg-[#005f99] transition">
+      <div class="flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#ffdd99]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+        </svg>
+      </div>
+      <div class="ml-3 flex-1">
+        <h2 class="text-sm font-bold font-comfortaa">Reuse this package</h2>
+        <p class="text-xs font-comfortaa">Easily create a new shipping label</p>
+      </div>
+      <div class="ml-auto text-[#ffdd99] font-bold text-sm">→</div>
+    </a>
+  </div>
+
+  <!-- Environmental Message -->
+  {% if message_ecologique %}
+  <div class="bg-green-100 text-green-700 text-center rounded-md shadow-md p-3 text-xs max-w-md font-comfortaa mt-10">
+    {{ message_ecologique }}
+  </div>
+  {% endif %}
+
+  <!-- Package Information -->
+  <div class="mt-auto"> 
+    <div class="mt-10">
+      <img src="{% static 'logo.png' %}" alt="Logo" style="height: 50px; margin: auto;">
+    </div>
+    <p class="text-xs text-[#2c3b2f] font-comfortaa mt-2">
+      Package ID: {{ colis.id }}
+    </p>
+  </div>
+</div>
+{% endblock %}

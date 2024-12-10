@@ -1,0 +1,57 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Page introuvable{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center h-[calc(100vh-5rem)] bg-[#fffefb]">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <!-- Logo Opack -->
+        <div class="text-center mb-6">
+            <img src="{% static 'logo.png' %}" alt="Opack Logo" class="h-14 mx-auto">
+        </div>
+
+        <!-- Message principal -->
+        <h1 class="text-2xl font-bold text-center text-[#2c3b2f] font-comfortaa">Tu t'es perdu !</h1>
+        <p class="text-center text-sm text-gray-600 mt-2 mb-4">
+            Ne t'inquiète pas, scanne simplement le QR code de ton Opack ou saisis l'ID du colis ici :
+        </p>
+        <p class="text-center text-sm text-gray-600 mb-6">
+            Format attendu : <strong>abcd1234-x</strong>
+        </p>
+
+        <!-- Formulaire pour saisir l'ID du colis -->
+        <form method="post" action="{% url 'colis_recherche' %}" class="space-y-6">
+            {% csrf_token %}
+            <div class="relative">
+                <input
+                    id="colis_id"
+                    name="colis_id"
+                    type="text"
+                    required
+                    class="peer block w-full rounded-lg border border-gray-300 bg-white px-4 pt-5 pb-2 text-sm text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none"
+                    placeholder=" " />
+                <label
+                    for="colis_id"
+                    class="absolute left-4 top-2.5 text-sm text-gray-500 transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-focus:top-2.5 peer-focus:text-primary">
+                    ID du colis*
+                </label>
+                <!-- Message d'erreur en cas de problème -->
+                {% if error_message %}
+                <p class="text-sm text-red-500 mt-1">
+                    {{ error_message }}
+                </p>
+                {% endif %}
+            </div>
+
+            <!-- Bouton de soumission -->
+            <button
+                type="submit"
+                class="w-full rounded-lg bg-primary py-2 px-4 text-sm font-bold text-white hover:bg-opacity-90 focus:ring-2 focus:ring-primary focus:outline-none">
+                Retrouve le colis
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

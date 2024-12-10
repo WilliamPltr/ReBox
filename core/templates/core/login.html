@@ -1,0 +1,125 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center h-[calc(100vh-5rem)] bg-[#fffefb]">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-sm">
+        <!-- Opack Logo -->
+        <div class="text-center mb-6">
+            <img src="{% static 'logo.png' %}" alt="Opack Logo" class="h-14 mx-auto">
+        </div>
+
+        <!-- Page Title -->
+        <h1 class="text-2xl font-bold text-center text-[#2c3b2f] font-comfortaa">Login</h1>
+        <p class="text-center text-sm text-gray-600 mt-2 mb-6">
+            Log in to Opack to continue.
+        </p>
+
+        <!-- Login Form -->
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- Display Global Errors -->
+            {% if form.non_field_errors %}
+            <div class="text-sm text-red-500 bg-red-100 p-3 rounded-md">
+                {{ form.non_field_errors|first }}
+            </div>
+            {% endif %}
+
+            <!-- Email Field -->
+            <div class="relative">
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    class="peer block w-full rounded-lg border border-gray-300 bg-white px-4 pt-5 pb-2 text-sm text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none"
+                    placeholder=" " />
+                <label
+                    for="email"
+                    class="absolute left-4 top-2.5 text-sm text-gray-500 transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-focus:top-2.5 peer-focus:text-primary">
+                    Email Address*
+                </label>
+                {% if form.email.errors %}
+                <p class="text-sm text-red-500 mt-1">
+                    {% if form.email.errors|first == "Enter a valid email address." %}
+                        Please enter a valid email address.
+                    {% else %}
+                        {{ form.email.errors|first }}
+                    {% endif %}
+                </p>
+                {% endif %}
+            </div>
+
+            <!-- Password Field -->
+            <div class="relative">
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    class="peer block w-full rounded-lg border border-gray-300 bg-white px-4 pt-5 pb-2 text-sm text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none"
+                    placeholder=" " />
+                <label
+                    for="password"
+                    class="absolute left-4 top-2.5 text-sm text-gray-500 transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-focus:top-2.5 peer-focus:text-primary">
+                    Password*
+                </label>
+                <!-- Button to Show/Hide Password -->
+                <button type="button" id="toggle-password" class="absolute right-4 top-4 text-gray-500">
+                    <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Hidden Field for Redirect After Login -->
+            <input type="hidden" name="next" value="{{ request.GET.next|default:'/' }}">
+            
+            <!-- Login Button -->
+            <button
+                type="submit"
+                class="w-full rounded-lg bg-primary py-2 px-4 text-sm font-bold text-white hover:bg-opacity-90 focus:ring-2 focus:ring-primary focus:outline-none">
+                Log In
+            </button>
+        </form>
+
+        <!-- Link to Password Reset -->
+        <div class="text-center mt-4">
+            <a href="{% url 'password_reset' %}?next={{ request.GET.next|default:'/' }}" class="text-sm text-primary hover:underline">
+            Forgot your password?
+            </a>
+        </div>
+
+        <!-- Link to Create an Account -->
+        <div class="text-center mt-4 text-sm">
+            Don't have an account yet?
+            <a href="{% url 'signup' %}?next={{ request.GET.next|default:'/' }}" class="text-primary font-bold hover:underline">Create an account</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Functionality to show or hide password
+    document.getElementById('toggle-password').addEventListener('click', function () {
+        const passwordField = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+        const isPasswordVisible = passwordField.type === 'text';
+
+        passwordField.type = isPasswordVisible ? 'password' : 'text';
+
+        // Toggle password visibility icons
+        eyeIcon.innerHTML = isPasswordVisible
+            ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>`
+            : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573-3.007 9.963-7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>`;
+    });
+</script>
+{% endblock %}

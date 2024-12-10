@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Return My Package{% endblock %}
+
+{% block content %}
+<div class="bg-[#fffefb] min-h-screen flex flex-col items-center px-4 py-6 overflow-y-auto">
+  <!-- Main Title -->
+  <h1 class="text-2xl font-bold text-center text-[#2c3b2f] font-comfortaa mb-6">
+    Return Your ReBox Package
+  </h1>
+
+  <!-- Inspirational Message -->
+  <div class="w-full max-w-md bg-[#0077b6] text-white p-4 rounded-lg shadow-md mb-6">
+    <!-- Icon and Text -->
+    <div class="flex justify-center mb-2">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-[#ffdd99]">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+      </svg>
+    </div>
+    <p class="text-center text-sm font-comfortaa">
+      <span class="font-bold">Thank you for your gesture! 🌱</span><br>
+      Thanks to you, our planet is a little greener and more sustainable. Together, let's make a difference! 💪
+    </p>
+  </div>
+
+  <!-- Step 1: Instructional Video -->
+  <div class="w-full max-w-md bg-white border-l-4 border-[#ffdd99] rounded-lg shadow-md p-4 mb-6">
+    <h2 class="text-lg font-bold text-[#2c3b2f] font-comfortaa mb-2">1. Fold your package ✉️</h2>
+    <p class="text-sm text-[#2c3b2f] font-comfortaa mb-4">
+      Follow the folding instructions for a simple and quick return!
+    </p>
+    <div class="rounded-lg overflow-hidden aspect-video">
+      <iframe 
+        class="w-full h-full"
+        src="https://www.youtube.com/embed/NEyuQXyhyYc" 
+        title="Return My Package"
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <!-- Step 2: Drop-off -->
+  <div class="w-full max-w-md bg-white border-l-4 border-[#0077b6] rounded-lg shadow-md p-4 mb-6">
+    <h2 class="text-lg font-bold text-[#2c3b2f] font-comfortaa mb-2">2. Drop it in a mailbox 📮</h2>
+    <p class="text-sm text-[#2c3b2f] font-comfortaa mb-4">
+      Drop it in the nearest yellow mailbox. Don’t worry, we’ll cover the shipping costs!
+    </p>
+    <!-- Mailbox Image -->
+    <div class="rounded-lg overflow-hidden aspect-video">
+      <img 
+        src="{% static 'images/boite_aux_lettres.jpg' %}" 
+        alt="Yellow Mailbox"
+        class="w-full h-full object-cover rounded-lg">
+    </div>
+    <!-- Link to find a mailbox -->
+    <div class="text-center mt-4">
+      <a 
+        href="https://localiser.laposte.fr/boites-aux-lettres" 
+        target="_blank"
+        class="inline-block w-full max-w-xs text-[#2c3b2f] font-bold py-2 px-4 border border-gray-300 bg-white rounded-lg shadow-md hover:shadow-lg hover:border-[#2c3b2f] transition-transform transform hover:-translate-y-1">
+        📍 Find a mailbox
+      </a>
+    </div>
+  </div>
+
+  <!-- Button to Mark as Completed -->
+  {% if user.is_authenticated %}
+  <form method="post" class="w-full max-w-md">
+    {% csrf_token %}
+    <button 
+      type="submit" 
+      class="block w-full text-center bg-[#0077b6] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#005f99] transition">
+      ✅ Got it! Finish
+    </button>
+  </form>
+  {% else %}
+  <!-- Message and link to log in -->
+  <p class="text-center text-sm text-red-500 font-comfortaa mt-4">
+    Log in to mark the package as returned.
+  </p>
+  <a 
+    href="{% url 'login' %}?next={{ request.path }}" 
+    class="block w-full max-w-md text-center bg-[#0077b6] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#005f99] transition mt-4">
+    Log in
+  </a>
+  {% endif %}
+</div>
+{% endblock %}
